@@ -16,4 +16,6 @@ https://htmlpreview.github.io/?https://github.com/lucho-39/CarritoDeEnvivo/blob/
 
 ![](./img/Captura.PNG)
 
+![](./img/Captura1.PNG)
+
 > [!NOTE] > https://www.youtube.com/watch?v=lduIpYA66mM

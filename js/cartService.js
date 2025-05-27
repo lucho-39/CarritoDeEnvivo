@@ -7,18 +7,18 @@ function agregarAlCarrito(producto) {
     let cantidadProductoFinal;
     //Si no hay localstorage lo creo
     if (!memoria || memoria.length === 0) {
-        const nuevoProducto = getNuevoProductoParaMemoria(producto)
+        const nuevaProducto = getNuevoProductoParaMemoria(producto);
         localStorage.setItem("bicicletas", JSON.stringify([nuevoProducto]));
         actualizarNumeroCarrito();
         cantidadProductoFinal = 1;
     } else {
         //Si hay localstorage me fijo si el artículo ya está ahí
-        const indiceProducto = memoria.findIndex(bicicleta => bicicleta.id === producto.id)
+        const indiceProducto = memoria.findIndex(bicicleta => bicicleta.id === producto.id);
         const nuevaMemoria = memoria;
         //Si el producto no está en el carrito lo agrego      
         if (indiceProducto === -1) {
             const nuevaProducto = getNuevoProductoParaMemoria(producto);
-            nuevaMemoria.push(nuevoProducto);
+            nuevaMemoria.push(nuevaProducto);
             cantidadProductoFinal = 1;
         } else {
             //Si el producto está en el carrito le agrego 1 a la cantidad.
