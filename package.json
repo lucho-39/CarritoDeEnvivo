@@ -1,0 +1,32 @@
+{
+  "name": "carritodeenvivo",
+  "version": "1.0.0",
+  "description": "Programa un carrito de compras con Javascript",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lucho-39/CarritoDeEnvivo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/lucho-39/CarritoDeEnvivo/issues"
+  },
+  "homepage": "https://github.com/lucho-39/CarritoDeEnvivo#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "promise-mysql": "^5.2.0",
+    "save-dev": "^0.0.1-security"
+  },
+  "devDependencies": {
+    "morgan": "^1.12.1",
+    "nodemon": "^3.1.14"
+  }
+}
