@@ -70,14 +70,24 @@ async function comprarCarrito() {
     if (!USAR_API) {
         return true;
     }
-    const res = await fetch(`${API_URL}/carrito/comprar`, {
-        method: "POST",
-        body: JSON.stringify(carrito),
-        headers: {
-            "Content-Type": "application/json"
-        }
-    });
-    return res.ok;
+    // Al servidor solo le mandamos id y cantidad: los precios los valida él.
+    const items = carrito.map(producto => ({
+        id: producto.id,
+        cantidad: producto.cantidad
+    }));
+    try {
+        const res = await fetch(`${API_URL}/carrito/comprar`, {
+            method: "POST",
+            body: JSON.stringify({ items }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        return res.ok;
+    } catch (error) {
+        console.error("No se pudo conectar con el servidor:", error);
+        return false;
+    }
 }
 
 actualizarNumeroCarrito();
