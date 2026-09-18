@@ -16,9 +16,7 @@ Proyecto basado en el tutorial de [puntoJson](https://youtube.com/@puntoJson):
 
 ## **Demo**
 
-Ver la página funcionando:
-
-https://htmlpreview.github.io/?https://github.com/lucho-39/CarritoDeEnvivo/blob/main/index.html
+https://lucho-39.github.io/CarritoDeEnvivo/
 
 La aplicación funciona **sin backend**, así que también podés abrir `index.html` en el
 navegador o servir la carpeta con cualquier servidor estático:
@@ -27,9 +25,8 @@ navegador o servir la carpeta con cualquier servidor estático:
 npx serve .
 ```
 
-> Para una demo más estable, activá GitHub Pages (Settings → Pages → Deploy from a
-> branch → `main` / root). El sitio queda en `https://lucho-39.github.io/CarritoDeEnvivo/`
-> y ahí funciona también el redirect a la página de compra exitosa.
+El sitio se publica con GitHub Pages desde la rama `main` (carpeta raíz), y el archivo
+`.nojekyll` desactiva el procesamiento de Jekyll para servir los archivos tal cual.
 
 ## **Screenshots**
 
