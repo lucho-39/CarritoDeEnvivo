@@ -16,15 +16,20 @@ Proyecto basado en el tutorial de [puntoJson](https://youtube.com/@puntoJson):
 
 ## **Demo**
 
-La aplicación funciona **sin backend**. Abrí `index.html` en el navegador o serví la
-carpeta con cualquier servidor estático:
+Ver la página funcionando:
+
+https://htmlpreview.github.io/?https://github.com/lucho-39/CarritoDeEnvivo/blob/main/index.html
+
+La aplicación funciona **sin backend**, así que también podés abrir `index.html` en el
+navegador o servir la carpeta con cualquier servidor estático:
 
 ```bash
 npx serve .
 ```
 
-También podés publicarla en GitHub Pages (Settings → Pages → Deploy from a branch →
-`main` / root) y va a funcionar igual, porque no depende de ningún servidor.
+> Para una demo más estable, activá GitHub Pages (Settings → Pages → Deploy from a
+> branch → `main` / root). El sitio queda en `https://lucho-39.github.io/CarritoDeEnvivo/`
+> y ahí funciona también el redirect a la página de compra exitosa.
 
 ## **Screenshots**
 
