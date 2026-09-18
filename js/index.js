@@ -6,9 +6,9 @@ function crearTarjetasProductosInicio(productos) {
         const nuevaBicicleta = document.createElement("div");
         nuevaBicicleta.classList = "tarjeta-producto";
         nuevaBicicleta.innerHTML = `
-         <img src="${producto.urlimagen || './img/productos/' + producto.id + '.jpg'}" alt="Bicicleta ${producto.id}">
-         <h3>${producto.nombre}</h3>
-         <p class="precio">$${producto.precio}</p>
+         <img src="${escapeHtml(producto.urlimagen || './img/productos/' + producto.id + '.jpg')}" alt="Bicicleta ${escapeHtml(producto.id)}">
+         <h3>${escapeHtml(producto.nombre)}</h3>
+         <p class="precio">$${escapeHtml(producto.precio)}</p>
          <button>Agregar al carrito</button>
         `
 

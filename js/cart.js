@@ -14,12 +14,12 @@ function crearTarjetasProductosCarrito() {
             const nuevaBicicleta = document.createElement("div");
             nuevaBicicleta.classList = "tarjeta-producto";
             nuevaBicicleta.innerHTML = `
-            <img src="${producto.urlimagen || './img/productos/' + producto.id + '.jpg'}" alt="Bicicleta ${producto.nombre}">
-            <h3>${producto.nombre}</h3>
-            <p>$${producto.precio}</p>
+            <img src="${escapeHtml(producto.urlimagen || './img/productos/' + producto.id + '.jpg')}" alt="Bicicleta ${escapeHtml(producto.nombre)}">
+            <h3>${escapeHtml(producto.nombre)}</h3>
+            <p>$${escapeHtml(producto.precio)}</p>
             <div>
                 <button>-</button>
-                <span class="cantidad">${producto.cantidad}</span>
+                <span class="cantidad">${escapeHtml(producto.cantidad)}</span>
                 <button>+</button>
             </div>
         `;
@@ -80,6 +80,8 @@ comprarCarritoElement.addEventListener("click", async () => {
     if (await comprarCarrito()) {
         reiniciarCarrito();
         window.location.href = "compra-exitosa.html";
+    } else if (USAR_API) {
+        alert("No se pudo completar la compra. Intentá de nuevo.");
     }
 });
 
