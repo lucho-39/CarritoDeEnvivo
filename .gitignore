@@ -1,1 +1,13 @@
+# Dependencias
+/node_modules
+
+# Variables de entorno
+.env
+
+# Herramientas locales
 /.vscode
+.atl/
+
+# Logs
+*.log
+npm-debug.log*
