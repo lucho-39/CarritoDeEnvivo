@@ -66,7 +66,9 @@ const USAR_API = false;
 
 ## **Backend opcional**
 
-El backend sirve el catálogo desde MySQL y expone el endpoint de compra.
+El backend sirve el catálogo desde MySQL, valida los precios del lado del servidor y
+persiste cada pedido. Es opcional: el front funciona sin él mientras `USAR_API` sea
+`false`.
 
 1. Instalar dependencias:
 
@@ -74,19 +76,14 @@ El backend sirve el catálogo desde MySQL y expone el endpoint de compra.
 npm install
 ```
 
-2. Crear la base de datos `productos` con una tabla `producto` que tenga, como mínimo,
-   las columnas `id`, `nombre`, `precio` y `urlimagen`:
+2. Crear las tablas y los datos de ejemplo:
 
-```sql
-CREATE DATABASE productos;
-
-CREATE TABLE producto (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(100) NOT NULL,
-    precio INT NOT NULL,
-    urlimagen VARCHAR(255) NOT NULL
-);
+```bash
+mysql -u root -p < sql/schema.sql
 ```
+
+`sql/schema.sql` es idempotente: crea `producto`, `pedido` y `pedido_detalle`, y carga
+las 6 bicicletas solo si la tabla `producto` está vacía.
 
 3. Copiar las credenciales de ejemplo y completarlas:
 
@@ -94,17 +91,30 @@ CREATE TABLE producto (
 cp .env.example .env
 ```
 
+Además de las credenciales de MySQL, `.env` acepta `PORT` (por defecto `4000`) y
+`CORS_ORIGINS` (orígenes permitidos, separados por coma).
+
 4. Levantar el servidor:
 
 ```bash
-npm run dev
+npm start        # o npm run dev para recarga automática
 ```
 
 La API escucha en `http://localhost:4000`:
 
-| Método | Ruta               | Descripción                     |
-| ------ | ------------------ | ------------------------------- |
-| GET    | `/productos`       | Devuelve el catálogo            |
-| POST   | `/carrito/comprar` | Recibe el carrito de la compra  |
+| Método | Ruta               | Descripción                   |
+| ------ | ------------------ | ----------------------------- |
+| GET    | `/productos`       | Devuelve el catálogo          |
+| POST   | `/carrito/comprar` | Valida y guarda un pedido     |
+
+`POST /carrito/comprar` espera únicamente el id y la cantidad de cada producto:
+
+```json
+{ "items": [ { "id": 1, "cantidad": 2 } ] }
+```
+
+El servidor ignora cualquier precio que venga del cliente: los busca en la base,
+calcula el total y guarda el pedido en una transacción. Responde `201` con
+`{ "pedidoId": 1, "total": 222222 }`.
 
 Para usarla desde el front, poné `USAR_API = true` en `js/config.js`.

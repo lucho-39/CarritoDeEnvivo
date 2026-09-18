@@ -2,8 +2,9 @@
   "name": "carritodeenvivo",
   "version": "1.0.0",
   "description": "Programa un carrito de compras con Javascript",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
+    "start": "node src/index.js",
     "dev": "nodemon src/index.js"
   },
   "repository": {
