@@ -136,6 +136,12 @@ app.use((error, req, res, next) => {
     res.status(500).json({ error: "Error interno del servidor" });
 });
 
-app.listen(app.get("port"), () => {
-    console.log("Escuchando comunicaciones al puerto " + app.get("port"));
-});
+// Solo se levanta el servidor cuando el archivo se ejecuta directamente; de este
+// modo el módulo se puede importar en pruebas sin abrir un puerto.
+if (require.main === module) {
+    app.listen(app.get("port"), () => {
+        console.log("Escuchando comunicaciones al puerto " + app.get("port"));
+    });
+}
+
+module.exports = app;
