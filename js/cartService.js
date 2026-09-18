@@ -1,75 +1,83 @@
 const cuentaCarritoElement = document.getElementById("cuenta-carrito");
 
-/** Toma un objeto producto o un objeto con al menos un ID y lo agrega al carrito */
+/** Toma un objeto producto, le agrega cantidad 1 y lo devuelve clonado */
+function getNuevoProductoParaMemoria(producto) {
+    return { ...producto, cantidad: 1 };
+}
+
+/** Agrega un producto al carrito y devuelve la cantidad resultante */
 function agregarAlCarrito(producto) {
-    //Reviso si el producto está en el carrito.
-    let memoria = JSON.parse(localStorage.getItem("bicicletas"));
-    let cantidadProductoFinal;
-    //Si no hay localstorage lo creo
-    if (!memoria || memoria.length === 0) {
-        const nuevaProducto = getNuevoProductoParaMemoria(producto);
+    const memoria = JSON.parse(localStorage.getItem("bicicletas"));
+    // Reviso si el producto ya está en el carrito.
+    let cuenta = 0;
+    // Si no hay nada guardado, creo el carrito con el producto.
+    if (!memoria) {
+        const nuevoProducto = getNuevoProductoParaMemoria(producto);
         localStorage.setItem("bicicletas", JSON.stringify([nuevoProducto]));
-        actualizarNumeroCarrito();
-        cantidadProductoFinal = 1;
+        cuenta = 1;
     } else {
-        //Si hay localstorage me fijo si el artículo ya está ahí
         const indiceProducto = memoria.findIndex(bicicleta => bicicleta.id === producto.id);
-        const nuevaMemoria = memoria;
-        //Si el producto no está en el carrito lo agrego      
+        // Si el producto no está en el carrito lo agrego.
         if (indiceProducto === -1) {
-            const nuevaProducto = getNuevoProductoParaMemoria(producto);
-            nuevaMemoria.push(nuevaProducto);
-            cantidadProductoFinal = 1;
+            memoria.push(getNuevoProductoParaMemoria(producto));
+            cuenta = 1;
         } else {
-            //Si el producto está en el carrito le agrego 1 a la cantidad.
-            nuevaMemoria[indiceProducto].cantidad++;
-            cantidadProductoFinal = nuevaMemoria[indiceProducto].cantidad;
+            // Si el producto ya está en el carrito le sumo 1 a la cantidad.
+            memoria[indiceProducto].cantidad++;
+            cuenta = memoria[indiceProducto].cantidad;
         }
-        localStorage.setItem("bicicletas", JSON.stringify(nuevaMemoria));
-        actualizarNumeroCarrito();
-        return cantidadProductoFinal;
+        localStorage.setItem("bicicletas", JSON.stringify(memoria));
     }
+    actualizarNumeroCarrito();
+    return cuenta;
 }
 
 /** Resta una unidad de un producto del carrito */
 function restarAlCarrito(producto) {
-    let memoria = JSON.parse(localStorage.getItem("bicicletas"));
-    let cantidadProductoFinal = 0;
-    const indiceProducto = memoria.findIndex(bicicleta => bicicleta.id === producto.id);
-    let nuevaMemoria = memoria;
-    nuevaMemoria[indiceProducto].cantidad--;
-    cantidadProductoFinal = nuevaMemoria[indiceProducto].cantidad;
-    if (cantidadProductoFinal === 0) {
-        nuevaMemoria.splice(indiceProducto, 1)
+    const memoria = JSON.parse(localStorage.getItem("bicicletas"));
+    // Si no hay carrito guardado no hay nada que restar.
+    if (!memoria) {
+        return;
     }
-    localStorage.setItem("bicicletas", JSON.stringify(nuevaMemoria));
+    const indiceProducto = memoria.findIndex(bicicleta => bicicleta.id === producto.id);
+    // Si el producto no está en el carrito no hay nada que restar.
+    if (indiceProducto === -1) {
+        return;
+    }
+    if (memoria[indiceProducto].cantidad === 1) {
+        memoria.splice(indiceProducto, 1);
+    } else {
+        memoria[indiceProducto].cantidad--;
+    }
+    localStorage.setItem("bicicletas", JSON.stringify(memoria));
     actualizarNumeroCarrito();
-    return cantidadProductoFinal;
-}
-
-/** Agrega cantidad a un objeto producto */
-function getNuevoProductoParaMemoria(producto) {
-    const nuevoProducto = producto;
-    nuevoProducto.cantidad = 1;
-    return nuevoProducto;
 }
 
 /** Actualiza el número del carrito del header */
 function actualizarNumeroCarrito() {
-    let cuenta = 0;
     const memoria = JSON.parse(localStorage.getItem("bicicletas"));
-    if (memoria && memoria.length > 0) {
-        cuenta = memoria.reduce((acum, current) => acum + current.cantidad, 0)
-        return cuentaCarritoElement.innerText = cuenta;
+    const cuenta = memoria ? memoria.reduce((acum, current) => acum + current.cantidad, 0) : 0;
+    cuentaCarritoElement.innerText = cuenta;
+}
+
+/** Resuelve la compra del carrito; devuelve true si se completó */
+async function comprarCarrito() {
+    const carrito = JSON.parse(localStorage.getItem("bicicletas"));
+    if (!carrito || carrito.length === 0) {
+        return false;
     }
-    cuentaCarritoElement.innerText = 0;
+    // En modo local la compra se resuelve sin backend.
+    if (!USAR_API) {
+        return true;
+    }
+    const res = await fetch(`${API_URL}/carrito/comprar`, {
+        method: "POST",
+        body: JSON.stringify(carrito),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
+    return res.ok;
 }
-
-/** Reinicia el carrito */
-function reiniciarCarrito() {
-    localStorage.removeItem("bicicletas");
-    actualizarNumeroCarrito();
-}
-
 
 actualizarNumeroCarrito();

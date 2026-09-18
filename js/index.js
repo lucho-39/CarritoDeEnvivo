@@ -6,7 +6,7 @@ function crearTarjetasProductosInicio(productos) {
         const nuevaBicicleta = document.createElement("div");
         nuevaBicicleta.classList = "tarjeta-producto";
         nuevaBicicleta.innerHTML = `
-         <img src="./img/productos/${producto.id}.jpg" alt="Bicicleta ${producto.id}">
+         <img src="${producto.urlimagen || './img/productos/' + producto.id + '.jpg'}" alt="Bicicleta ${producto.id}">
          <h3>${producto.nombre}</h3>
          <p class="precio">$${producto.precio}</p>
          <button>Agregar al carrito</button>
@@ -17,4 +17,8 @@ function crearTarjetasProductosInicio(productos) {
     });
 }
 
-crearTarjetasProductosInicio(bicicletas);
+getBicicletas().then(bicicletas => {
+    crearTarjetasProductosInicio(bicicletas);
+}).catch(error => {
+    console.error("No se pudieron cargar las bicicletas:", error);
+})
